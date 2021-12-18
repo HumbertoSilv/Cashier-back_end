@@ -24,7 +24,6 @@ const cashierFunction = (req, res) => {
         ...req.body,
         notes: changeInNotes
     };
-
     res.status(200).send(response);
 
 };
