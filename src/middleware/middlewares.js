@@ -25,6 +25,10 @@ export const checkIfHasNotes = (req, res, next) => {
     if(thing > total) {
         return res.status(400).send({Error: 'Not enough notes.'});
     };
+
+    if(thing < 0){
+        return res.status(400).send({Error: 'Payment less than the purchase amount.'});
+    };
     req.body = {...req.body, thing};
     next();
 
