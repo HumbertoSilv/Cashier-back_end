@@ -5,12 +5,17 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.17.2",
-    "sucrase": "^3.20.3"
+    "sucrase": "^3.20.3",
+    "yup": "^0.32.11"
   },
   "scripts": {
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/server.js",
+    "test": "jest"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "@sucrase/jest-plugin": "^2.2.0",
+    "jest": "^27.4.5",
+    "nodemon": "^2.0.15",
+    "supertest": "^6.1.6"
   }
 }
