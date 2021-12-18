@@ -9,7 +9,7 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/app.js"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

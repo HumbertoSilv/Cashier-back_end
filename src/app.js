@@ -1,42 +1,17 @@
 import express, { response } from "express";
 import availableNotes from "./config/availableNotes";
 import { cashierSchema } from './models/schema/schemaCashier';
+import { validateBody, checkIfHasNotes } from './middleware/middlewares';
 
 const app = express();
 
 app.use(express.json());
-
-const validateBody = (schema) => async (req, res, next) => {
-    try {
-        const validatedData = await schema.validate(req.body);
-        req.body = validatedData;
-    } catch(error) {
-        return res.status(400).send({Error: error.message});
-    };
-    next();
-    
-};
+app.use('/cashier', validateBody(cashierSchema), checkIfHasNotes);
 
 
-
-const cashBalance = () => {
-    let total = 0;
-    for (let i = 0; i < availableNotes.length; i++) {
-        const noteValue = Object.keys(availableNotes[i]);
-        const numberOfNotes = Object.values(availableNotes[i]);
-        total += numberOfNotes * noteValue;
-    };
-    return total;
-};
-
-app.post('/cashier', validateBody(cashierSchema), (req, res) => {
-    const { purchaseAmount, amountPaid} = req.body;
+app.post('/cashier', (req, res) => {
+    let { thing } = req.body;
     const changeInNotes = {};
-    let thing = amountPaid - purchaseAmount;
-
-    if(thing > cashBalance()) {
-        return res.status(400).send({Error: 'Not enough grades.'});
-    };
 
     for (let i = 0; i < availableNotes.length; i++) {
         let noteValue = Object.keys(availableNotes[i]);
@@ -56,7 +31,7 @@ app.post('/cashier', validateBody(cashierSchema), (req, res) => {
     console.log(availableNotes);
     response = {
         ...req.body,
-        changeInNotes: changeInNotes
+        notes: changeInNotes
     };
 
     res.status(200).send(response);
