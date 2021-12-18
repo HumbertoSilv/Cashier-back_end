@@ -1,7 +1,7 @@
 import availableNotes from "../config/availableNotes";
 
-const cashierFunction = (req, res) => {
-    let { thing } = req.body;
+export const cashierFunction = (body) => {
+    let { thing } = body;
     const changeInNotes = {};
 
     for (let i = 0; i < availableNotes.length; i++) {
@@ -16,16 +16,22 @@ const cashierFunction = (req, res) => {
         if(availableNotes[i][noteValue] > numberOfNotes) {
             availableNotes[i][noteValue] -= numberOfNotes;
         } else{
-            return res.status(400).send({Error: 'Not enough grades.'});
+            // 
+            return false;
         };
     };
-    console.log(availableNotes);
     const response = {
-        ...req.body,
+        ...body,
         notes: changeInNotes
     };
-    res.status(200).send(response);
 
+    return response;
 };
 
-export default cashierFunction;
+export const cashier = (req, res) => {
+    const response = cashierFunction(req.body);
+    if(response){
+        return res.status(200).send(response);
+    };
+    return res.status(400).send({Error: 'Not enough grades.'});
+};
